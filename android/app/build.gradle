@@ -16,8 +16,22 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
-    buildTypes {
+
+    signingConfigs {
         release {
+            storeFile file("task-tracker-capacitor-keystore")
+            storePassword "kimkim123"
+            keyAlias "task-tracker-capacitor-key"
+            keyPassword "kimkim123"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+        release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -52,4 +66,17 @@ try {
     }
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
+
+android.applicationVariants.all { variant ->
+    if (variant.buildType.name == "release") {
+        variant.outputs.all { output ->
+            def appName = "tasktracker"
+            def date = new Date().format("MMddyy-HHmmss") // MMDDYY-hhmmss
+            def newApkName = "${appName}-${date}-release.apk"
+
+            outputFileName = newApkName
+            println "Renaming APK to: ${newApkName}"
+        }
+    }
 }

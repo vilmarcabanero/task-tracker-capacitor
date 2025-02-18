@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "apk": "./build-apk.sh",
+    "apk:clean": "./build-apk.sh --clean"
   },
   "dependencies": {
     "@capacitor/android": "^7.0.1",
